@@ -214,15 +214,15 @@ class SentimentIntensityAnalyzer(object):
         self.lexicon = self.make_lex_dict()
 
         emoji_lex_dic = {}
-        with io.open(os.path.join(dirname(_this_module_file_path_), 'data/emoji lexicon 2.txt'), encoding='utf-16') as f:
+        with io.open(os.path.join(dirname(_this_module_file_path_), 'data/emoji_lexicon.txt'), encoding='utf-16') as f:
             lis = [line.split() for line in f]
             for i,row in enumerate(lis):
                 emoji = row[0].encode('utf-8')
                 measure = row[1]
                 # print(emoji)
                 emoji_lex_dic[emoji] =  float(measure)
-        self.lexicon = dict(self.lexicon.items() + emoji_lex_dic.items())
-        print(self.lexicon)
+        # self.lexicon = dict(self.lexicon.items() + emoji_lex_dic.items())
+        self.lexicon = dict(list(self.lexicon.items()) + list(emoji_lex_dic.items()))
 
     def make_lex_dict(self):
         """
@@ -258,7 +258,7 @@ class SentimentIntensityAnalyzer(object):
             sentiments = self.sentiment_valence(valence, sentitext, item, i, sentiments)
 
         sentiments = self._but_check(words_and_emoticons, sentiments)
-        # print(sentiments)
+        print(sentiments)
 
         valence_dict = self.score_valence(sentiments, text)
         # print(valence_dict)
@@ -476,12 +476,16 @@ if __name__ == '__main__':
     classifier = SentimentIntensityAnalyzer()
     data_dir = './data'
     features_dir = './features'
+    new_lines = []
 
     print("Loading data...")
-    with open(os.path.join(data_dir, 'tweets_processed.txt'), 'r') as f:
+    with open(os.path.join(features_dir, 'tweets_processed2.txt'), 'r') as f:
         x = np.array(f.readlines())
+        print(len(x))
+        # x = np.array([line.replace('\r', '') for line in f.readlines()])
+
     with open(os.path.join(data_dir, 'labels.txt'), 'r') as f:
-        y = np.array([ int(line.strip()) for line in f.readlines()])
+        y = np.array([int(line.strip()) for line in f.readlines()])
 
     print("Start training and predict...")
     kf = KFold(n_splits=10)
