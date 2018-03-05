@@ -1,5 +1,5 @@
 # coding: utf-8
-# Author: Lizi Liao, originally by C.J. Hutto
+# Author: Wang Shenghao, originally by C.J. Hutto
 # For license information, see LICENSE.TXT
 
 """

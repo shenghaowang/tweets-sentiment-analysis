@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.model_selection import KFold
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import MultinomialNB
@@ -44,6 +45,24 @@ def exec_main():
 	print('Average Precision is %f.' %(avg_p/10.0))
 	print('Average Recall is %f.' %(avg_r/10.0))
 	print('Average F1 score is %f.' %(avg_f1/10.0))
+
+	## Develop classifier with the full dataset and print the variable importance measurements
+	rf = RandomForestClassifier(n_estimators = 1000, max_features = 6, \
+			random_state=0).fit(x_matrix[train], y[train])
+	features = ['retweet count', 'followers count', 'friends_count', \
+				'listed_count', 'favourites_count', 'statuses_count']
+	print("Features sorted by their score:")
+	print(sorted(zip(map(lambda x: round(x, 4), rf.feature_importances_), features), \
+	    	reverse=True))
+	# importances = rf.feature_importances_
+	# indices = np.argsort(importances)
+	# features = ['retweet count', 'followers count', 'friends_count', \
+	# 			'listed_count', 'favourites_count', 'statuses_count']
+	# plt.figure(1)
+	# plt.title('Feature Importances')
+	# plt.barh(range(len(indices)), importances[indices], color='b', align='center')
+	# plt.yticks(range(len(indices)), features[indices])
+	# plt.xlabel('Relative Importance')
 
 	return social_cnt_probs
 

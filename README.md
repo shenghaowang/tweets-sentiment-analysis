@@ -1,48 +1,19 @@
-Lab 2: Sentiment Analysis
-Deadline: 5 Mar 2018(Mon, 1800 Hrs)
+CN4242 Lab 2: Sentiment Analysis of Microblog Streams
+Student: A0105772H
 
-### Introduction to DATASET
-This dataset contains tweets with following 3 sentiment classes: 
-0. negative
-1. neutral
-2. positive
-
-The total size of dataset is about 5,000 tweets. The tweets are in json format and organised as each one a line in ./data/tweets.txt. The groundtruth of these tweets is provided in ./data/labels.txt.
-
-The tweet data is in json format, which contains all available information provided by Twitter.
-For details about the definition of each field, please refer to https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/tweet-object.
-For better visualization, you can utilize online json editor tool (http://jsoneditoronline.org/).
-If you need to get more information (e.g., comments, images, social relations), you could use the Twitter API: https://developer.twitter.com/
-
-sentiment_lexicon.txt: the file is tab delimited with TOKEN, MEAN-SENTIMENT-RATING, STANDARD DEVIATION, and RAW-HUMAN-SENTIMENT-RATINGS
-The current algorithm makes immediate use of the first two elements (token and mean valence).
+## Usage of tweet classifier
+1. Open terminal (Ubuntu/Mac) or command line prompt (Windows).
+2. Check the current version of Python. Ensure that Python 3 is in use.
+3. Redirect to the project folder: "tweet-sentiment-analysis".
+4. Run the following command to prepare the tweet features for sentiment analysis.
+python tweet_mixed_preprocessor.py
+5. Type "python" plus the script name of the analyzer to perform classification. Press Enter key to execute the script.
+e.g. "python tweets_late_fusion_analyzer.py",  "python tweets_vader_sentiment_analyzer.py".
+6. There are 5 analyzers available:
+Level 0: "tweets_vader_sentiment_analyzer.py", "tweets_tfidf_sentiment_analyzer.py", "tweets_social_counts_analyzer.py"
+Level 1: "tweets_late_fusion_analyzer.py"
 
 
-### Policy
-This dataset contains original data crawled from Twitter. 
-Due to privacy issues, please do not public this dataset to anyone or for any use outside the class. Thank you.
-
-
-### Environment Setting
-1. Ubuntu 16.04
-2. Python 2.7
-
-### Set up Python 2 Environment with Anaconda
-1. conda create -n py27 python=2.7
-2. source activate py27
-3. source deactivate
-
-### Installation 
-1. nltk 
-2. simplejson
-3. pickle
-4. numpy
-5. scipy
-6. scikit-learn
-Note: All these libraries can be installed via pip. (e.g., pip install nltk)  
-
-
-
-### Usage 
-1. Run './Step1_preprocess.py' to prepocess tweet content, including data cleaning (e.g., remove url, time). 
-2. Run 'Step2_basic_sentiment_analyzer.py', which leverages sentiment lexicon. You are supposed to see performances (classification score, average percision, average recall) printing into the screen.
+## Remarks
+1. Take note that the classifier scripts are written in Python 3.
+2. The titles of relevant webpage from expanded urls are scraped with the Scrapy library. The project files are kept in the folder of "tweet_context".
