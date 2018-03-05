@@ -1,8 +1,8 @@
 import os, scrapy, requests
 from tweet_context.items import TweetContextItem
 
-class TestContextSpider(scrapy.Spider):
-	name = "shenghao"
+class TweetContextSpider(scrapy.Spider):
+	name = "tweet_context_scraper"
 	urls_dir = './'
 	# urls_filename = 'expanded_urls.txt'
 	urls_filename = 'final_urls.txt'
@@ -19,24 +19,9 @@ class TestContextSpider(scrapy.Spider):
 		f.close()
 
 	def parse(self, response):
-		# time.sleep(1)
 		tweet_id = self.tweet_ids[self.start_urls.index(response.url)]
 		new_callback = lambda response: self.parse_context(response, tweet_id)
-		yield scrapy.Request(response.url, callback=new_callback)
-
-		# for url in self.start_urls:
-		# 	tweet_id = self.tweet_ids[self.start_urls.index(url)]
-		# 	print("*******************" + str(tweet_id))
-		# 	new_callback = lambda response: self.parse_context(response, tweet_id)
-		# 	yield scrapy.Request(url, callback=new_callback)
-
-		# for j, url in enumerate(self.start_urls):
-		# 	tweet_id = self.tweet_ids[j]
-		# 	time.sleep(5)
-		# 	new_callback = lambda response: self.parse_context(response, tweet_id)
-		# 	yield scrapy.Request(url, callback=new_callback)
-
-		
+		yield scrapy.Request(response.url, callback=new_callback)	
 
 	def parse_context(self, response, id):
 		item = TweetContextItem()

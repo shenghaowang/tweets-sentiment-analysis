@@ -3,7 +3,7 @@ import sys
 # reload(sys)
 # sys.setdefaultencoding('utf8')
 
-import os, re, emoji
+import os, re, emoji, csv
 # import nltk
 #nltk.download()
 # from nltk.corpus import stopwords
@@ -60,19 +60,33 @@ if __name__ == "__main__":
     features_dir = './features'
     context_dir = './tweet_context'
 
-    x_filename = 'tweets.txt'
-    y_filename = 'labels.txt'
-
+    x_filename = 'context.csv'
+    y_filename = 'tweets.txt'
 
     ## Load and process samples
     print('start loading and process samples...')
     tweets = []
     expanded_urls = []
+    social_counts = []
 
-    with open(os.path.join(data_dir, x_filename)) as f:
+    ## Import tweet contexts
+    with open(os.path.join(context_dir, x_filename), mode='r') as f_context:
+        reader = csv.reader(f_context)
+        context_dict = {rows[1]:rows[0] for rows in reader}
+        print(context_dict['2793'])
+
+    with open(os.path.join(data_dir, y_filename)) as f:
         for i, line in enumerate(f):
             tweet_obj = json.loads(line.strip(), encoding='utf-8')
             content = tweet_obj['text'].replace("\n"," ")
+            key = str(i+1)
+            if key in context_dict.keys():
+                title = context_dict[key].strip().replace("\n"," ").replace("\t", " ")
+                title_words = title.split()
+                text_words = content.split()
+                for word in title_words:
+                    if word not in text_words:
+                        content += word
             postprocess_tweet = pre_process(content)
             tweets.append(postprocess_tweet)
 
@@ -80,16 +94,29 @@ if __name__ == "__main__":
             if no_of_urls > 0:
                 expanded_urls.append(str(i+1) + '\t' + tweet_obj['entities']['urls'][0]['expanded_url'])
 
-
-    # print(expanded_urls)
-    # print(emoji.UNICODE_EMOJI)
+            ## Collect relevant counts of social features
+            retweet_cnt = tweet_obj['retweet_count']
+            followers_cnt = tweet_obj['user']['followers_count']
+            friends_cnt = tweet_obj['user']['friends_count']
+            listed_cnt = tweet_obj['user']['listed_count']
+            favourites_cnt = tweet_obj['user']['favourites_count']
+            statuses_cnt = tweet_obj['user']['statuses_count']
+            social_counts_list = [str(retweet_cnt), str(followers_cnt), str(friends_cnt), str(listed_cnt), 
+                                str(favourites_cnt), str(statuses_cnt)]
+            social_counts.append('\t'.join(social_counts_list))
 
     ## Re-process samples, filter low frequency words...
-    fout = open(os.path.join(features_dir, 'text_emoji.txt'), 'w')
+    fout = open(os.path.join(features_dir, 'text_emoji_news.txt'), 'w')
+    print(len(tweets))
     for tweet in tweets:
         tweet = tweet.replace('\n', ' ').replace('\r', '')
         fout.write('%s\n' %tweet)
     fout.close()
+
+    fcnt = open(os.path.join(features_dir, 'social_counts.txt'), 'w')
+    for cnt in social_counts:
+        fcnt.write('%s\n' %cnt)
+    fcnt.close()
 
     with open(os.path.join(context_dir, 'expanded_urls.txt'), 'w') as furl:
         for expanded_url in expanded_urls:

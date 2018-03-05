@@ -16,7 +16,7 @@ import math, re, string, requests, json
 from itertools import product
 from inspect import getsourcefile
 from os.path import abspath, join, dirname
-from sklearn.metrics import classification_report, precision_score, recall_score
+from sklearn.metrics import classification_report, precision_score, recall_score, f1_score
 
 ##Constants##
 
@@ -214,15 +214,14 @@ class SentimentIntensityAnalyzer(object):
         self.lexicon = self.make_lex_dict()
 
         emoji_lex_dic = {}
-        with io.open(os.path.join(dirname(_this_module_file_path_), 'data/emoji lexicon 2.txt'), encoding='utf-16') as f:
+        with io.open(os.path.join(dirname(_this_module_file_path_), 'data/emoji_lexicon.txt'), encoding='utf-16') as f:
             lis = [line.split() for line in f]
             for i,row in enumerate(lis):
                 emoji = row[0].encode('utf-8')
                 measure = row[1]
-                # print(emoji)
                 emoji_lex_dic[emoji] =  float(measure)
-        self.lexicon = dict(self.lexicon.items() + emoji_lex_dic.items())
-        print(self.lexicon)
+        # self.lexicon = dict(self.lexicon.items() + emoji_lex_dic.items())
+        self.lexicon = dict(list(self.lexicon.items()) + list(emoji_lex_dic.items()))
 
     def make_lex_dict(self):
         """
@@ -471,22 +470,28 @@ class SentimentIntensityAnalyzer(object):
 
         return sentiment_dict
 
-if __name__ == '__main__':
-    
+
+def exec_main():    
     classifier = SentimentIntensityAnalyzer()
     data_dir = './data'
     features_dir = './features'
+    new_lines = []
 
     print("Loading data...")
-    with open(os.path.join(data_dir, 'tweets_processed.txt'), 'r') as f:
+    with open(os.path.join(features_dir, 'text_emoji.txt'), 'r') as f:
         x = np.array(f.readlines())
+        print(len(x))
+
     with open(os.path.join(data_dir, 'labels.txt'), 'r') as f:
-        y = np.array([ int(line.strip()) for line in f.readlines()])
+        y = np.array([int(line.strip()) for line in f.readlines()])
 
     print("Start training and predict...")
     kf = KFold(n_splits=10)
     avg_p = 0
     avg_r = 0
+    avg_f1 = 0
+    vader_probs = np.empty([0, 3])
+
     for train, test in kf.split(y):
 
         # you can use the train data to train your classifiers
@@ -494,15 +499,28 @@ if __name__ == '__main__':
         # then apply to the test data as below
 
         predict_scores = []
+        senti_prob = []
+
         for instance in x[test]:
             predict_scores.append(classifier.polarity_scores(instance)["compound"])
+            neg = classifier.polarity_scores(instance)["neg"]
+            neu = classifier.polarity_scores(instance)["neu"]
+            pos = classifier.polarity_scores(instance)["pos"]
+            senti_prob.append([neg, neu, pos])
         predicts = map_to_label(predict_scores)
+        vader_probs = np.concatenate((vader_probs, np.array(senti_prob)))
 
         # print(classification_report(y[test],predicts))
         avg_p += precision_score(y[test],predicts, average='macro')
         avg_r += recall_score(y[test],predicts, average='macro')
+        avg_f1 += f1_score(y[test],predicts, average='macro')
 
     print('Average Precision is %f.' %(avg_p/10.0))
     print('Average Recall is %f.' %(avg_r/10.0))
+    print('Average F1 Score is %f.' %(avg_f1/10.0))
 
-    
+    return vader_probs
+
+
+if __name__ == '__main__':
+    exec_main()
