@@ -2,7 +2,7 @@ Lab 2: Sentiment Analysis
 Deadline: 5 Mar 2018(Mon, 1800 Hrs)
 
 ### Introduction to DATASET
-This dataset contains tweets with following 3 sentiment classes: 
+This dataset contains tweets with following 3 sentiment classes:
 0. negative
 1. neutral
 2. positive
@@ -19,7 +19,7 @@ The current algorithm makes immediate use of the first two elements (token and m
 
 
 ### Policy
-This dataset contains original data crawled from Twitter. 
+This dataset contains original data crawled from Twitter.
 Due to privacy issues, please do not public this dataset to anyone or for any use outside the class. Thank you.
 
 
@@ -32,17 +32,17 @@ Due to privacy issues, please do not public this dataset to anyone or for any us
 2. source activate py27
 3. source deactivate
 
-### Installation 
-1. nltk 
+### Installation
+1. nltk
 2. simplejson
 3. pickle
 4. numpy
 5. scipy
 6. scikit-learn
-Note: All these libraries can be installed via pip. (e.g., pip install nltk)  
+Note: All these libraries can be installed via pip. (e.g., pip install nltk)
 
 
 
-### Usage 
-1. Run './Step1_preprocess.py' to prepocess tweet content, including data cleaning (e.g., remove url, time). 
+### Usage
+1. Run './Step1_preprocess.py' to prepocess tweet content, including data cleaning (e.g., remove url, time).
 2. Run 'Step2_basic_sentiment_analyzer.py', which leverages sentiment lexicon. You are supposed to see performances (classification score, average percision, average recall) printing into the screen.

@@ -1,0 +1,10 @@
+emoji
+hydra-core
+loguru
+nltk
+numpy
+pandas
+scikit-learn
+plotly
+pre-commit
+twikit
