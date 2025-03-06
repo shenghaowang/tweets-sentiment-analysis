@@ -1,4 +1,5 @@
 import json
+import re
 import time
 from dataclasses import asdict
 from datetime import datetime
@@ -50,6 +51,7 @@ def get_tweets_filename(query: str) -> str:
     Returns:
         str: _description_
     """
+    query = re.sub(r"[^a-zA-Z0-9 ]+", "", query)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     return f'{query.replace(" ", "_")}_{timestamp}.csv'
 
