@@ -5,7 +5,7 @@ from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
 from random import randint
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 from loguru import logger
 from twikit import Client
@@ -16,16 +16,21 @@ from data.post import Post
 
 
 def search(client: Client, query: str, tweets: Result[Tweet] = None) -> Result[Tweet]:
-    """
-    Search for tweets based on a given query
+    """Search for tweets based on a given query
 
-    Args:
-        client (Client): Twikit client
-        query (str): query to be used for searching tweets
-        tweets (Result[Tweet], optional): search results. Defaults to None.
+    Parameters
+    ----------
+    client : Client
+        Twikit client
+    query : str
+        query to be used for searching tweets
+    tweets : Result[Tweet], optional
+        search results, by default None
 
-    Returns:
-        Result[Tweet]: _description_
+    Returns
+    -------
+    Result[Tweet]
+        Tweets relevant to the given query
     """
     if tweets is None:
         logger.info(f"{datetime.now()} - Getting tweets...")
@@ -43,25 +48,32 @@ def search(client: Client, query: str, tweets: Result[Tweet] = None) -> Result[T
 
 
 def get_tweets_filename(query: str) -> str:
-    """
+    """Get the name of the file for storing tweets
 
-    Args:
-        query (str): _description_
+    Parameters
+    ----------
+    query : str
+        query used for searching tweets
 
-    Returns:
-        str: _description_
+    Returns
+    -------
+    str
+        name of the file for storing tweets
     """
     query = re.sub(r"[^a-zA-Z0-9 ]+", "", query)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    return f'{query.replace(" ", "_")}_{timestamp}.csv'
+    return f'{query.replace(" ", "_")}_{timestamp}.json'
 
 
-def export(file_path: Path, tweets: Result[Tweet], attributes: List[str]) -> None:
-    """
+def export(file_path: Path, tweets: Result[Tweet]) -> None:
+    """Write tweets to a JSON file
 
-    Args:
-        file_path (str): _description_
-        tweets (Result[Tweet]): _description_
+    Parameters
+    ----------
+    file_path : Path
+        file path for saving tweets
+    tweets : Result[Tweet]
+        search results
     """
     # Initialize output file if it does not exist
     if not file_path.exists():
@@ -81,14 +93,17 @@ def export(file_path: Path, tweets: Result[Tweet], attributes: List[str]) -> Non
 
 
 def parse_tweet(tweet: Tweet) -> Dict[str, Any]:
-    """
+    """Extract relevant attributes from a tweet instance
 
-    Args:
-        tweet (Tweet): _description_
-        attributes (List[str]): _description_
+    Parameters
+    ----------
+    tweet : Tweet
+        Tweet object
 
-    Returns:
-        dict: _description_
+    Returns
+    -------
+    Dict[str, Any]
+        Dictionary containing tweet attributes
     """
     res = Post.from_object(tweet)
 

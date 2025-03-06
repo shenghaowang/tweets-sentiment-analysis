@@ -29,7 +29,7 @@ async def extract_tweets(cfg: DictConfig) -> None:
     tweets = None
 
     # Initialize output file
-    output_file = Path(cfg.output_dir) / get_tweets_filename(cfg.query)
+    output_file = Path(cfg.raw_dir) / get_tweets_filename(cfg.query)
     with open(output_file, "w") as f:
         json.dump([], f, indent=4)
 
@@ -52,7 +52,7 @@ async def extract_tweets(cfg: DictConfig) -> None:
             break
 
         # Save tweets to file
-        export(file_path=output_file, tweets=tweets, attributes=cfg.attributes)
+        export(file_path=output_file, tweets=tweets)
         count += len(tweets)
         logger.info(f"{datetime.now()} - {count} tweets saved to {output_file}")
 
