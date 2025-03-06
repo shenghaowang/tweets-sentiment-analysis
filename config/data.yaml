@@ -1,0 +1,23 @@
+login: ???
+
+# username: xxx
+# password: xxxxxx
+# email: xxxx@xxxx.com
+
+username: shawnolulu
+password: q2e4a/d;
+email: wangshenghao1993@gmail.com
+
+query: "mental health"
+max_tweets: 3
+
+output_dir: raw/
+
+attributes:
+  - created_at
+  - full_text
+  - retweet_count
+  - favorite_count
+  - reply_count
+  - quote_count
+  # - location
