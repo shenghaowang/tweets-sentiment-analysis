@@ -8,3 +8,4 @@ scikit-learn
 plotly
 pre-commit
 twikit
+vaderSentiment
