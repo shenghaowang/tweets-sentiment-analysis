@@ -1,5 +1,5 @@
 hydra-core
-logger
+loguru
 nltk
 numpy
 pandas
