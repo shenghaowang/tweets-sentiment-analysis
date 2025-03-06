@@ -8,4 +8,4 @@ query: "depressed"
 max_tweets: 1000
 
 raw_dir: raw/
-processed: data/tweets.csv
+processed_filepath: data/tweets.csv
