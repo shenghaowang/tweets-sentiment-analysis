@@ -3,6 +3,9 @@
 import os
 
 import numpy as np
+import tweets_social_counts_analyzer
+import tweets_tfidf_sentiment_analyzer
+import tweets_vader_sentiment_analyzer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import (
     classification_report,
@@ -12,10 +15,6 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import KFold
 from sklearn.naive_bayes import MultinomialNB
-
-import tweets_social_counts_analyzer
-import tweets_tfidf_sentiment_analyzer
-import tweets_vader_sentiment_analyzer
 
 vader_probs = np.array(tweets_vader_sentiment_analyzer.exec_main())
 social_cnt_probs = tweets_social_counts_analyzer.exec_main()
