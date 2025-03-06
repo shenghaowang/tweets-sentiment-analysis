@@ -1,3 +1,4 @@
+emoji
 hydra-core
 loguru
 nltk
