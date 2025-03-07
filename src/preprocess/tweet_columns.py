@@ -14,3 +14,5 @@ class TweetColumns:
     hashtags: str = "hashtags"
     location: str = "location"
     place: str = "place"
+    sentiment: str = "sentiment"
+    risk_level: str = "risk_level"
