@@ -8,6 +8,8 @@ nltk.download("vader_lexicon")
 
 
 class TweetClassifier:
+    """Class for classify tweet based on sentiment and risk level"""
+
     def __init__(self):
         self.sia = SentimentIntensityAnalyzer()
         self.tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
@@ -18,6 +20,18 @@ class TweetClassifier:
         self.low_risk_ref = self.get_embedding("Mental health is important")
 
     def classify_sentiment(self, text: str) -> str:
+        """Classify text based on sentiment score
+
+        Parameters
+        ----------
+        text : str
+            text to be classified
+
+        Returns
+        -------
+        str
+            sentiment carried by given text
+        """
         compound = self.sia.polarity_scores(text)["compound"]
         if compound >= 0.05:
             return "Positive"
@@ -29,6 +43,18 @@ class TweetClassifier:
             return "Neutral"
 
     def get_embedding(self, text: str) -> torch.Tensor:
+        """Get embedding from Bert
+
+        Parameters
+        ----------
+        text : str
+            input text
+
+        Returns
+        -------
+        torch.Tensor
+            embedding tensor
+        """
         inputs = self.tokenizer(
             text, return_tensors="pt", truncation=True, padding=True
         )
@@ -39,6 +65,18 @@ class TweetClassifier:
         return outputs.last_hidden_state.mean(dim=1)
 
     def classify_risk(self, text: str) -> str:
+        """Classify text based on risk level
+
+        Parameters
+        ----------
+        text : str
+            text to be classified
+
+        Returns
+        -------
+        str
+            risk level
+        """
         embedding = self.get_embedding(text)
         scores = {
             "High": cosine_similarity(embedding, self.high_risk_ref),
