@@ -1,4 +1,5 @@
 import re
+from typing import List
 
 import emoji
 import nltk
@@ -52,8 +53,9 @@ def rm_stopwords(text: str) -> str:
     return " ".join([word for word in words if word not in stop_words])
 
 
-def pre_process(text: str) -> str:
-    text = text.lower()
+def process_text(text: str) -> str:
+    text = text.lower().replace("\n", "")
+    text = text.encode("ascii", "ignore").decode()
     text = rm_url(text)
     text = rm_at_user(text)
     text = rm_repeat_chars(text)
@@ -62,3 +64,7 @@ def pre_process(text: str) -> str:
     text = rm_emojis(text)
 
     return text
+
+
+def process_tags(hashtags: List[str]) -> str:
+    return "|".join([tag.lower() for tag in hashtags])
