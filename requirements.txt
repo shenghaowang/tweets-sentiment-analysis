@@ -7,5 +7,7 @@ pandas
 scikit-learn
 plotly
 pre-commit
+torch
+transformers
 twikit
 vaderSentiment
