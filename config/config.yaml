@@ -9,3 +9,6 @@ max_tweets: 1000
 
 raw_dir: raw/
 processed_filepath: data/tweets.csv
+distribution_filepath:
+  sentiment: data/distribution_by_sentiment.csv
+  risk_level: data/distribution_by_risk_level.csv

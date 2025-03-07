@@ -57,7 +57,7 @@ async def extract_tweets(cfg: DictConfig) -> None:
         logger.info(f"{datetime.now()} - {count} tweets saved to {output_file}")
 
 
-@hydra.main(version_base=None, config_path="../../config", config_name="data")
+@hydra.main(version_base=None, config_path="../../config", config_name="config")
 def main(cfg: DictConfig) -> None:
     logger.debug(OmegaConf.to_container(cfg))
     asyncio.run(extract_tweets(cfg))

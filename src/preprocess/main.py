@@ -10,7 +10,7 @@ from preprocess.tweet_columns import TweetColumns
 from preprocess.utils import process_tags, process_text
 
 
-@hydra.main(version_base=None, config_path="../../config", config_name="data")
+@hydra.main(version_base=None, config_path="../../config", config_name="config")
 def main(cfg: DictConfig) -> None:
     logger.debug(OmegaConf.to_container(cfg))
 
