@@ -13,3 +13,4 @@ distribution_filepath:
   sentiment: data/distribution_by_sentiment.csv
   risk_level: data/distribution_by_risk_level.csv
   location: data/distribution_by_location.csv
+  heatmap: data/heatmap.png
