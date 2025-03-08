@@ -5,6 +5,7 @@ nltk
 numpy
 pandas
 scikit-learn
+stanza
 plotly
 pre-commit
 torch
