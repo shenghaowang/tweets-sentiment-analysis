@@ -33,6 +33,13 @@ def main(cfg: DictConfig) -> None:
     tweet_cols = TweetColumns()
     tweets_df[tweet_cols.text] = tweets_df[tweet_cols.text].apply(process_text)
     tweets_df[tweet_cols.hashtags] = tweets_df[tweet_cols.hashtags].apply(process_tags)
+    tweets_df[tweet_cols.location] = tweets_df[tweet_cols.location].apply(process_text)
+
+    # Handle missing columns
+    for col in (tweet_cols.text, tweet_cols.location, tweet_cols.hashtags):
+        tweets_df[col] = tweets_df[col].fillna("")
+        tweets_df[col] = tweets_df[col].astype(str)
+
     logger.debug(f"\n{tweets_df.head()}")
 
     # Remove duplicate tweets
