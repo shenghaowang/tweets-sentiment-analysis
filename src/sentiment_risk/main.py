@@ -6,7 +6,6 @@ from tqdm import tqdm
 
 from preprocess.tweet_columns import TweetColumns
 from sentiment_risk.classifier import TweetClassifier
-from sentiment_risk.geolocation import identify_location
 
 tqdm.pandas()
 
@@ -20,9 +19,8 @@ def main(cfg: DictConfig) -> None:
 
     # Handle missing columns
     tweet_cols = TweetColumns()
-    for col in (tweet_cols.text, tweet_cols.location, tweet_cols.hashtags):
-        tweets_df[col] = tweets_df[col].fillna("")
-        tweets_df[col] = tweets_df[col].astype(str)
+    tweets_df[tweet_cols.text] = tweets_df[tweet_cols.text].fillna("")
+    tweets_df[tweet_cols.text] = tweets_df[tweet_cols.text].astype(str)
 
     # Classify by sentiment
     classifier = TweetClassifier()
@@ -45,20 +43,6 @@ def main(cfg: DictConfig) -> None:
     )
     tweets_df[tweet_cols.risk_level].value_counts().to_csv(
         cfg.distribution_filepath.risk_level, index=True, header=True
-    )
-
-    # Classify by location
-    tweets_df[tweet_cols.valid_location] = tweets_df.progress_apply(
-        lambda row: identify_location(
-            row[tweet_cols.location] + row[tweet_cols.hashtags] + row[tweet_cols.text]
-        ),
-        axis=1,
-    )
-    logger.info(
-        f"Distribution of posts by valid location: \n{tweets_df[tweet_cols.valid_location].value_counts()}"
-    )
-    tweets_df[tweet_cols.valid_location].value_counts().to_csv(
-        cfg.distribution_filepath.location, index=True, header=True
     )
 
 
