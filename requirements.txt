@@ -1,6 +1,7 @@
 emoji
 geopy
 hydra-core
+kaleido
 loguru
 nltk
 numpy
