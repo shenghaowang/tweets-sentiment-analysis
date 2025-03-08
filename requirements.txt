@@ -1,4 +1,5 @@
 emoji
+geopy
 hydra-core
 loguru
 nltk
