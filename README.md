@@ -1,9 +1,9 @@
 # Tweet Analysis and Geolocation
 
-This project provides a proof-of-concept (POC) solution with the following features:
+This project provides a POC solution with the following features:
 
 * Extract, Process, and Analyze Crisis-Related Discussions: Collect crisis-related discussions from social media using custom queries.
-* Sentiment Analysis and NLP: Apply sentiment analysis and natural language processing (NLP) techniques to assess high-risk content and categorize posts based on sentiment and risk levels.
+* Sentiment Analysis and NLP: Apply sentiment analysis and NLP techniques to assess high-risk content and categorize posts based on sentiment and risk levels.
 * Geocoding and Trend Visualization: Geocode crisis-related posts and visualize trends on an interactive map.
 
 ## Installation
