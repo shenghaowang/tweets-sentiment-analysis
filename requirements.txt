@@ -1,10 +1,13 @@
 emoji
+geopy
 hydra-core
+kaleido
 loguru
 nltk
 numpy
 pandas
 scikit-learn
+stanza
 plotly
 pre-commit
 torch
