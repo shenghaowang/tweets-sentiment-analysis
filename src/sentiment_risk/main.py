@@ -4,9 +4,9 @@ from loguru import logger
 from omegaconf import DictConfig, OmegaConf
 from tqdm import tqdm
 
-from analysis.classifier import TweetClassifier
-from analysis.geolocation import identify_location
 from preprocess.tweet_columns import TweetColumns
+from sentiment_risk.classifier import TweetClassifier
+from sentiment_risk.geolocation import identify_location
 
 tqdm.pandas()
 
@@ -18,9 +18,14 @@ def main(cfg: DictConfig) -> None:
     # Load processed tweets
     tweets_df = pd.read_csv(cfg.processed_filepath)
 
+    # Handle missing columns
+    tweet_cols = TweetColumns()
+    for col in (tweet_cols.text, tweet_cols.location, tweet_cols.hashtags):
+        tweets_df[col] = tweets_df[col].fillna("")
+        tweets_df[col] = tweets_df[col].astype(str)
+
     # Classify by sentiment
     classifier = TweetClassifier()
-    tweet_cols = TweetColumns()
     tweets_df[tweet_cols.sentiment] = tweets_df[tweet_cols.text].progress_apply(
         classifier.classify_sentiment
     )
