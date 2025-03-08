@@ -67,4 +67,4 @@ def process_text(text: str) -> str:
 
 
 def process_tags(hashtags: List[str]) -> str:
-    return "|".join([tag.lower() for tag in hashtags])
+    return " ".join([process_text(tag) for tag in hashtags])
