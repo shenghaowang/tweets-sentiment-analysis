@@ -20,8 +20,8 @@ An X account needs to be registered to extract the microblogs data. The credenti
 
 ## Usage
 
-### 1. Extract Tweet Messages with a Specific Query
-To extract tweet messages based on a specific query, a query needs to be provided in the [config file](config/config.yaml).
+### 1. Extract X Messages with a Specific Query
+To extract X messages based on a specific query, a query needs to be provided in the [config file](config/config.yaml). The X posts are extracted using a free Twitter API Scraper called [Twikit](https://github.com/d60/twikit).
 
 Initial Setup: On the first run, the login option must be set to `True`. This will initiate the login process.
 ```
